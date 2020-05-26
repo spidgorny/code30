@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import {RuleLine} from "./RuleLine";
 
 interface AppState {
 	lines: boolean[][];
@@ -43,7 +44,8 @@ class App extends React.Component {
 			setTimeout(async () => {
 				await this.addLine();
 				resolve();
-			}, 10);
+				window.scrollTo(0, this.size * this.state.lines.length);
+			}, 1);
 		});
 	}
 
@@ -73,27 +75,10 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				{this.state.lines.map((line, index) =>
-					<div key={'row' + index} style={{
-						height: this.size + 'px',
-						whiteSpace: 'pre',
-					}}
-					>{this.renderLine(index, line)}</div>
+					<RuleLine bits={line} key={'row' + index} size={this.size}/>
 				)}
 			</div>
 		);
-	}
-
-	renderLine(row: number, line: boolean[]) {
-		return line.map((el, index) => {
-			return <div
-				key={'cell' + row + '.' + index}
-				style={{
-					width: this.size + 'px',
-					height: this.size + 'px',
-					display: 'inline-block',
-					backgroundColor: el ? 'black' : 'white !important',
-				}}/>;
-		});
 	}
 
 }
